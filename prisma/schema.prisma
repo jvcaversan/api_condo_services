@@ -15,8 +15,8 @@ model User {
   name      String
   email     String   @unique
   password  String
-  Acess     Acess?   @relation(fields: [acessId], references: [id])
-  acessId   Int?
+  Access    Access?  @relation(fields: [accessId], references: [id])
+  accessId  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -31,7 +31,7 @@ model Condominios {
   updatedAt DateTime   @updatedAt
 }
 
-model Acess {
+model Access {
   id        Int      @id @default(autoincrement())
   name      String
   user      User[]
