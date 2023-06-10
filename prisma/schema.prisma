@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  Acess     Acess?   @relation(fields: [acessId], references: [id])
+  acessId   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Condominios {
+  id        Int        @id @default(autoincrement())
+  name      String
+  endereco  String     @unique
+  cep       String
+  servicos  Servicos[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Acess {
+  id        Int      @id @default(autoincrement())
+  name      String
+  user      User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Servicos {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  description        String
+  equipamento_reparo Tipos_Equipamentos[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  Condominios        Condominios?         @relation(fields: [condominiosId], references: [id])
+  condominiosId      Int?
+}
+
+model Tipos_Equipamentos {
+  id             Int           @id @default(autoincrement())
+  name           String
+  Equipamentos   Equipamentos? @relation(fields: [equipamentosId], references: [id])
+  equipamentosId Int?
+  Servicos       Servicos?     @relation(fields: [servicosId], references: [id])
+  servicosId     Int?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Equipamentos {
+  id        Int                  @id @default(autoincrement())
+  name      String
+  tipo      Tipos_Equipamentos[]
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+}
